@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <title>Solar System</title>
+    <style media="screen">
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            
+        };
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.min.js" integrity="sha512-Q+IG0h7As6sfqE2t1Xf5IeamNyCXb4EXxGCA9Mlbpv7xtwurVHNdVDbyWeSQ3ulPf2FRlqeu77Ec3SJDdIR63w==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.js" integrity="sha512-8Yom5spEjD3HeZTNoDiOm4Y4Rn3RVKUFpiqTM4I3RIIO0u8e2m7XjT5rG1GQNHJlVcD9EZrzn+itENl4C6112A==" crossorigin="anonymous"></script>
+    <script src="lib/OrbitControls.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r92/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5.1/dat.gui.min.js"></script>
+    <div class ="topnav">
+      <link rel="stylesheet" href="css.css">
+  
+         
+      <a href="project.html">Solar System</a>  
+      <a href="sun.html">Sun</a>
+      <a href="mercury.html">mercury</a>
+      <a href="venus.html">venus</a>
+      <a href="earth.html">earth</a>
+      <a href="mars.html">mars</a>
+      <a href="jupiter.html">jupiter</a>
+      <a href="saturn.html">saturn</a>
+      <a href="neptune.html">neptune</a>
+         </div>
+<div class ="sidenav">
+          <link rel ="stylesheet" href ="planets.css">
+<p>Mars is the fourth planet from the Sun - a dusty, cold, desert world with a very thin atmosphere. Mars is also a dynamic planet with seasons, polar ice caps, canyons, extinct volcanoes, and evidence that it was even more active in the past.
+
+Mars is one of the most explored bodies in our solar system, and it's the only planet where we've sent rovers to roam the alien landscape. Two NASA rovers and one lander are currently exploring the surface of Mars (and a Chinese lander is set to land later this year). An international fleet of eight orbiters are studying the Red Planet from above.
+These robotic explorers have found lots of evidence that Mars was much wetter and warmer, with a thicker atmosphere, billions of years ago.
+
+<br> Volume: 163,115,609,799km3 </br>
+<br> Radius: 3,389.5km </br>
+<br> Density: 3.934g/cm3 </br>
+<br> Surface Area: 144,371,391km2 </br>
+<br> Mass: 641,693,000,000,000,000,000,000kg </br>
+</p> 
+
+        </div>
+    <script>
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+  var ww = window.innerWidth, wh = window.innerHeight;
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  document.body.appendChild(renderer.domElement);
+
+
+window.addEventListener('resize', function()
+{
+  var width=window.innerWidth;
+  var height=window.innerHeight;
+  renderer.setSize(width,height);
+  camera.aspect=width/height;
+  camera.updateProjectionMatrix();
+});
+
+controls = new THREE.OrbitControls(camera, renderer.domElement);
+camera.position.z = 300;
+camera.lookAt(0,0,300);
+
+
+//skybox
+  var loader2 = new THREE.CubeTextureLoader();
+  var texture = loader2.load([
+    'corona_ft.png',
+    'corona_bk.png',
+    'corona_up.png',
+    'corona_dn.png',
+    'corona_rt.png',
+    'corona_lf.png',
+  ]);
+  
+  scene.background = texture; 
+
+//lights
+var light = new THREE.AmbientLight(0xFFFFFF, 1);
+scene.add(light);
+
+var light2 = new THREE.PointLight(0x9b870c, 2, 10000000);
+light2.position.set( 0,0,0 );
+scene.add( light2 )
+
+var controls = new function() {
+            this.Camera = 130;
+            this.rotate = true;
+        }
+
+        var gui = new dat.GUI();
+        gui.add(controls, 'Camera',90,700);
+        gui.add(controls, 'rotate').onChange(GameLoop);
+
+        function dender() {
+         camera.position.z = controls.Camera;
+            
+             requestAnimationFrame(dender);
+        }
+dender();
+//create models
+function create(){
+
+  loader = new THREE.GLTFLoader();
+
+  //mars        
+loader.load(
+            // resource URL
+            'models/mars1/scene.gltf',
+            // called when the resource is loaded
+            function (gltf) {
+                mars = gltf.scene.children[0];
+                mars.scale.set(50, 50, 50);
+                scene.add(mars);
+             
+            }
+);
+
+renderer.render(scene,camera);
+};
+create();
+
+
+//stars
+function manySpheres(){
+
+spheres = new THREE.Object3D();
+
+sphereGeometry = new THREE.SphereGeometry(1, 50, 50);
+sphereMaterial = new THREE.MeshBasicMaterial( {color:0xffffff} );
+for(var i=0;i<1500;i++){
+    sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    sphere.rotation.x = (Math.random()-.5)*Math.PI;
+    sphere.rotation.y = (Math.random()-.5)*Math.PI;
+    sphere.rotation.z = (Math.random()-.5)*Math.PI;
+    sphere.position.x = (Math.random()-.5)*ww*15;
+    sphere.position.y = (Math.random()-.5)*wh*15;
+    sphere.position.z = (Math.random()-.5)*500;
+    
+    spheres.add(sphere);
+}
+
+scene.add(spheres);
+};
+manySpheres();
+
+
+
+var GameLoop = function()
+{
+
+  requestAnimationFrame(GameLoop);
+  if(controls.rotate)
+  mars.rotateZ(0.01);
+  spheres.rotateY(0.00003);
+  renderer.render(scene,camera);
+
+};
+GameLoop();
+
+    </script>
+</body>
+</html>

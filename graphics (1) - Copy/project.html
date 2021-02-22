@@ -1,0 +1,392 @@
+<html>
+<head>
+    <title>Solar System</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.min.js" integrity="sha512-Q+IG0h7As6sfqE2t1Xf5IeamNyCXb4EXxGCA9Mlbpv7xtwurVHNdVDbyWeSQ3ulPf2FRlqeu77Ec3SJDdIR63w==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.js" integrity="sha512-8Yom5spEjD3HeZTNoDiOm4Y4Rn3RVKUFpiqTM4I3RIIO0u8e2m7XjT5rG1GQNHJlVcD9EZrzn+itENl4C6112A==" crossorigin="anonymous"></script>
+    <script src="lib/OrbitControls.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r92/examples/js/loaders/GLTFLoader.js"></script>
+
+    <div class ="topnav">
+      <link rel="stylesheet" href="css.css">
+  
+         
+      <a href="project.html">Solar System</a>  
+      <a href="sun.html">Sun</a>
+      <a href="mercury.html">mercury</a>
+      <a href="venus.html">venus</a>
+      <a href="earth.html">earth</a>
+      <a href="mars.html">mars</a>
+      <a href="jupiter.html">jupiter</a>
+      <a href="saturn.html">saturn</a>
+      <a href="neptune.html">neptune</a>
+         </div>
+  
+  
+  
+  
+<script>
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+  var ww = window.innerWidth, wh = window.innerHeight;
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  document.body.appendChild(renderer.domElement);
+
+
+window.addEventListener('resize', function()
+{
+  var width=window.innerWidth;
+  var height=window.innerHeight;
+  renderer.setSize(width,height);
+  camera.aspect=width/height;
+  camera.updateProjectionMatrix();
+});
+
+controls = new THREE.OrbitControls(camera, renderer.domElement);
+camera.position.z = 3500;
+camera.position.y=500;
+camera.lookAt(0,0,0);
+
+
+//skybox
+  var loader2 = new THREE.CubeTextureLoader();
+  var texture = loader2.load([
+    'corona_ft.png',
+    'corona_bk.png',
+    'corona_up.png',
+    'corona_dn.png',
+    'corona_rt.png',
+    'corona_lf.png',
+  ]); 
+  scene.background = texture; 
+
+//lights
+var light = new THREE.AmbientLight(0xFFFFFF, 1);
+scene.add(light);
+
+var light2 = new THREE.PointLight(0x9b870c, 2, 10000000);
+light2.position.set( 0,0,0 );
+scene.add( light2 )
+
+
+//create models
+function create(){
+
+  loader = new THREE.GLTFLoader();
+
+ //sun         
+loader.load(
+                  // resource URL
+                  'models/sunx/scene.gltf',
+                  // called when the resource is loaded
+                  function (gltf) {
+                      sun = gltf.scene.children[0];
+                      sun.scale.set(150, 150, 150);
+                      scene.add(sun);
+                      sun.position.x = 0;
+                      sun.position.y = 0;
+                  }
+            );
+
+        
+//mercury 
+loader.load(
+                 // resource URL
+                 'models/mercury/scene.gltf',
+                 // called when the resource is loaded
+                 function (gltf) {
+                     mercury = gltf.scene.children[0];
+                     mercury.scale.set(50, 50, 50);
+                     scene.add(mercury);
+                     mercury.position.x = 600;
+                     
+                 }
+     );
+        
+
+
+//venus
+loader.load(
+                          // resource URL
+                          'models/venus1/scene.gltf',
+                          // called when the resource is loaded
+                          function (gltf) {
+                              venus = gltf.scene.children[0];
+                              venus.scale.set(1, 1, 1);
+                              scene.add(venus);
+                              venus.position.x = 900;
+                              venus.position.y = -40;
+                              
+                          
+                          }
+              );
+
+
+
+//earth 
+loader.load(
+            // resource URL
+            'models/earth/scene.gltf',
+            // called when the resource is loaded
+            function ( gltf ) {
+                earth=gltf.scene.children[0];
+                earth.scale.set(0.8,0.8,0.8);
+                scene.add(earth);
+                //earth.position.z = 600;
+                earth.position.x = 1200;
+
+            }
+);
+
+
+
+//mars        
+loader.load(
+            // resource URL
+            'models/mars1/scene.gltf',
+            // called when the resource is loaded
+            function (gltf) {
+                mars = gltf.scene.children[0];
+                mars.scale.set(50, 50, 50);
+                scene.add(mars);
+                mars.position.x = 1450;
+                mars.position.y = -40;
+            }
+);
+
+
+
+//jupiter
+loader.load(
+                // resource URL
+                'models/jupiter/scene.gltf',
+                // called when the resource is loaded
+                function (gltf) {
+                    jupiter = gltf.scene.children[0];
+                    jupiter.scale.set(120, 120, 120);
+                    scene.add(jupiter);
+                    jupiter.position.x = 1800;
+                    //jupiter.position.y = -40;
+                    //jupiter.position.z = 30;
+                }
+    );
+
+
+
+//saturn
+loader.load(
+                // resource URL
+                'models/saturn/scene.gltf',
+                // called when the resource is loaded
+                function (gltf) {
+                    saturn = gltf.scene.children[0];
+                    saturn.scale.set(0.1, 0.1, 0.1);
+                    scene.add(saturn);
+                    saturn.position.x = 2100;
+                    saturn.position.z = 80;
+                }
+    );
+
+
+
+//uranus
+loader.load(
+                // resource URL
+                'models/uranus/scene.gltf',
+                // called when the resource is loaded
+                function (gltf) {
+                    uranus = gltf.scene.children[0];
+                    uranus.scale.set(50, 50, 50);
+                    scene.add(uranus);
+                    uranus.position.x = 2400;
+                    uranus.position.z = 80;
+                }
+    );
+    
+//neptune
+loader.load(
+                // resource URL
+                'models/neptune/scene.gltf',
+                // called when the resource is loaded
+                function (gltf) {
+                    neptune = gltf.scene.children[0];
+                    neptune.scale.set(10, 10, 10);
+                    scene.add(neptune);
+                    neptune.position.x = 2700;
+                    neptune.position.z = 80;
+                }
+    );
+   
+
+  
+
+renderer.render(scene,camera);
+};
+create();
+
+Orbits = new THREE.Object3D();
+function createorbit(){
+var geometry = new THREE.RingGeometry( 600, 595, 100);
+var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, side: THREE.DoubleSide } );
+var mesh1 = new THREE.Mesh( geometry, material );
+mesh1.rotateX(Math.PI/2);
+Orbits.add( mesh1 );
+
+
+var geometry = new THREE.RingGeometry( 900, 895, 100);
+var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, side: THREE.DoubleSide } );
+var mesh2 = new THREE.Mesh( geometry, material );
+mesh2.rotateX(Math.PI/2);
+Orbits.add( mesh2 );
+
+
+var geometry = new THREE.RingGeometry( 1200, 1195, 100);
+var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, side: THREE.DoubleSide } );
+var mesh3 = new THREE.Mesh( geometry, material );
+mesh3.rotateX(Math.PI/2);
+Orbits.add( mesh3 );
+
+var geometry = new THREE.RingGeometry( 1450, 1445, 100);
+var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, side: THREE.DoubleSide } );
+var mesh4 = new THREE.Mesh( geometry, material );
+mesh4.rotateX(Math.PI/2);
+Orbits.add( mesh4 );
+
+var geometry = new THREE.RingGeometry( 1800, 1795, 100);
+var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, side: THREE.DoubleSide } );
+var mesh5 = new THREE.Mesh( geometry, material );
+mesh5.rotateX(Math.PI/2);
+Orbits.add( mesh5 );
+
+var geometry = new THREE.RingGeometry( 2050, 2045, 100);
+var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, side: THREE.DoubleSide } );
+var mesh6 = new THREE.Mesh( geometry, material );
+mesh6.rotateX(Math.PI/2);
+Orbits.add( mesh6 );
+
+var geometry = new THREE.RingGeometry( 2400, 2395, 100);
+var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, side: THREE.DoubleSide } );
+var mesh7 = new THREE.Mesh( geometry, material );
+mesh7.rotateX(Math.PI/2);
+Orbits.add( mesh7 );
+
+var geometry = new THREE.RingGeometry( 2660, 2655, 100);
+var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, side: THREE.DoubleSide } );
+var mesh8 = new THREE.Mesh( geometry, material );
+mesh8.rotateX(Math.PI/2);
+Orbits.add( mesh8 );
+
+scene.add(Orbits);
+renderer.render(scene,camera);
+
+}
+
+document.addEventListener("keydown", onDocumentKeyDown, false);
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 83) {
+createorbit();
+    }   
+    else if(keyCode == 72) {scene.remove(Orbits); }
+    render();
+};
+
+/*    var keyCode = event.which;
+    if (keyCode == 32) {
+      if (flag = true)
+        flag = false;
+      else
+        flag = true;
+    }   
+};*/
+
+//rotation func.
+function animate(){
+  
+  sun.rotateZ(0.01);
+
+  mercury.translateX(-600);
+	mercury.rotateZ(0.01);
+  mercury.translateX(+600);
+
+
+	venus.translateX(-900);
+	venus.rotateZ(0.009);
+	venus.translateX(+900);
+    
+	earth.translateX(-1200);
+	earth.rotateZ(0.008);
+  earth.translateX(+1200);
+  
+	mars.translateX(-1450);
+	mars.rotateZ(0.007);
+  mars.translateX(+1450);
+  
+	jupiter.translateX(-1800);
+	jupiter.rotateZ(0.006);
+	jupiter.translateX(+1800);
+    
+	saturn.translateX(-2100);
+	saturn.rotateZ(0.005);
+	saturn.translateX(+2100);
+    
+	uranus.translateX(-2400);
+	uranus.rotateZ(0.004);
+	uranus.translateX(+2400);
+    
+	neptune.translateX(-2700);
+	neptune.rotateZ(0.003);
+  neptune.translateX(+2700);
+
+  
+};
+
+
+//stars
+function manySpheres(){
+
+spheres = new THREE.Object3D();
+
+sphereGeometry = new THREE.SphereGeometry(1, 50, 50);
+sphereMaterial = new THREE.MeshBasicMaterial( {color:0xffffff} );
+for(var i=0;i<1500;i++){
+    sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    sphere.rotation.x = (Math.random()-.5)*Math.PI;
+    sphere.rotation.y = (Math.random()-.5)*Math.PI;
+    sphere.rotation.z = (Math.random()-.5)*Math.PI;
+    sphere.position.x = (Math.random()-.5)*ww*15;
+    sphere.position.y = (Math.random()-.5)*wh*15;
+    sphere.position.z = (Math.random()-.5)*500;
+    
+    spheres.add(sphere);
+}
+
+scene.add(spheres);
+};
+manySpheres();
+
+
+
+
+var GameLoop = function()
+{
+
+  requestAnimationFrame(GameLoop);
+  animate();
+  spheres.rotateY(0.00003);
+  renderer.render(scene,camera);
+
+};
+GameLoop();
+
+
+    </script>
+
+</body>
+
+</html>
